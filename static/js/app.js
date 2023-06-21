@@ -16,8 +16,12 @@
     });
   
     // Filter the data for the object with the desired sample number (the id)
-  
-  
+    function selectId(sampleId, idNumber){
+        return metadata.id == idNumber;
+    };
+    
+    let test = selectId(940);
+
     // Select the panel with id of `#sample-metadata`
       
   
