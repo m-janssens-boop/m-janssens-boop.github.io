@@ -11,16 +11,26 @@
     console.log("Data Promise: ", dataPromise);
 
     //fetch the JSON data and console log it
-    d3.json(url).then(function(data){
+   d3.json(url).then(function(data){
     console.log(data);
-    });
-  
+
+    //create arrays of names, metadata, and samples
+    let names = Object.values(data.names)
+    let metadata = Object.values(data.metadata)
+    let samples = Object.values(data.samples)
+    
+    //console.log("names: ", names)
+    console.log("metadata: ", metadata)
+    //console.log("samples: ", samples)
+    let sample = 940
     // Filter the data for the object with the desired sample number (the id)
-    function selectId(sampleId, idNumber){
-        return metadata.id == idNumber;
+    function selectId(sample){
+        return metadata.id == sample;
     };
     
-    let test = selectId(940);
+    let sampleData = metadata.filter(selectId);
+
+    console.log("sample: ", sampleData);
 
     // Select the panel with id of `#sample-metadata`
       
@@ -32,14 +42,23 @@
   
   
     // If you want to do the bonus, you can make the gauge chart here
-  
+    });
 //} 
     ;
 
   
   function buildCharts(sample) {
     // Access the website and use .then to operate on the data
-  
+        // read in url
+      //  const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+
+        // promise pending
+       // const dataPromise = d3.json(url);
+      //  console.log("Data Promise: ", dataPromise);
+    
+        //fetch the JSON data and console log it
+       //d3.json(url).then(function(data){
+      //  console.log(data);
   
       // Filter the data for the object with the desired sample number (the id)
   
@@ -55,13 +74,13 @@
   
       // Build a Horizontal Bar Chart
   
-  
+       //});
     ;
   }
   
   function init() {
     // Get the reference to the dropdown menu
-  
+    
   
     // Use the list of sample names to populate the select options
     // Do this by pulling the array associated with `names` 
