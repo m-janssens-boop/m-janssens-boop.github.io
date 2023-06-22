@@ -18,14 +18,13 @@
     let names = Object.values(data.names)
     let metadata = Object.values(data.metadata)
     let samples = Object.values(data.samples)
-    
     //console.log("names: ", names)
     console.log("metadata: ", metadata)
     //console.log("samples: ", samples)
-    let sample = 940
+    
     // Filter the data for the object with the desired sample number (the id)
-    function selectId(sample){
-        return metadata.id == sample;
+    function selectId(){
+        return metadata.id == 940;
     };
     
     let sampleData = metadata.filter(selectId);
