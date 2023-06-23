@@ -1,51 +1,33 @@
 
 
-//function buildMetadata(sample) {
+function buildMetadata(sample) {
 
     // Access the website and use d3 to operate on the data
     // read in url
     const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-    // promise pending
-    const dataPromise = d3.json(url);
-    console.log("Data Promise: ", dataPromise);
-
     //fetch the JSON data and console log it
-   d3.json(url).then(function(data){
+   d3.json(url).then((data) => {
     console.log(data);
 
-    //create arrays of names, metadata, and samples
-    let names = Object.values(data.names)
-    let metadata = Object.values(data.metadata)
-    let samples = Object.values(data.samples)
-    //console.log("names: ", names)
-    console.log("metadata: ", metadata)
-    //console.log("samples: ", samples)
-    
     // Filter the data for the object with the desired sample number (the id)
-    function selectId(){
-        return metadata.id == 940;
-    };
-    
-    let sampleData = metadata.filter(selectId);
-
-    console.log("sample: ", sampleData);
-
+    let metadata = data.metadata;
+    let filteredArray = metadata.filter(sampleObj => sampleObj.id == sample);
+    let result = filteredArray[0];
     // Select the panel with id of `#sample-metadata`
-      
+    let panel = d3.select("#sample-metadata");
   
     // Clear existing metadata - use `.html("")`
-      
+    panel.html("");
   
     // Append new tags for each key-value in the metadata
-  
+    for (key in result){
+      panel.append("h6").text(`${key.toUpperCase()}: ${result[key]}`)
+    };
   
     // If you want to do the bonus, you can make the gauge chart here
     });
-//} 
-    ;
-
-  
+};
   function buildCharts(sample) {
     // Access the website and use .then to operate on the data
         // read in url
@@ -79,26 +61,35 @@
   
   function init() {
     // Get the reference to the dropdown menu
-    
+    let selector = d3.select("#selDataset")
   
     // Use the list of sample names to populate the select options
+    const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+
+    //fetch the JSON data and console log it
+    d3.json(url).then((data) => {
     // Do this by pulling the array associated with `names` 
+      let idNames = data.names;
       
-  
       // Loop through the names and append to the dropdown menu
-  
+      for (let i = 0; i < idNames.length; i++){
+        selector.append("option").text(idNames[i]).property("value",idNames[i]);
+      };
   
       // Use the first sample from the list to build the initial plots
-      
-  
+      let firstSample = idNames[0]
+      //buildCharts(firstSample)
+      buildMetadata(firstSample)
+    })
     ;
   }
   
   function optionChanged(newSample) {
     // Change your data and update your plots/metadata when newSample is selected from the dropdown
+    //buildCharts(newSample);
+    buildMetadata(newSample);
   
-  
-  }
+  };
   
   // Initialize the dashboard
   init();
