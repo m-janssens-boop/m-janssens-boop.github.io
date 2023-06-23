@@ -31,33 +31,40 @@ function buildMetadata(sample) {
   function buildCharts(sample) {
     // Access the website and use .then to operate on the data
         // read in url
-      //  const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+    const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-        // promise pending
-       // const dataPromise = d3.json(url);
-      //  console.log("Data Promise: ", dataPromise);
-    
-        //fetch the JSON data and console log it
-       //d3.json(url).then(function(data){
-      //  console.log(data);
-  
+    //fetch the JSON data and console log it
+    d3.json(url).then((data) => {
+    console.log(data);
       // Filter the data for the object with the desired sample number (the id)
-  
-  
+      let samples = data.samples;
+      let filteredSamplesArray = samples.filter(sampleObj => sampleObj.id == sample);
+      let result = filteredSamplesArray[0]
       // Pull the desired information (ids, labels, values) from your filtered data
-  
-  
+      let id = result.id;
+      let labels = result.map(object => object.otu_ids);
+      let values = result.map(object => object.sample_values);
       // Build a Bubble Chart
       
   
       // Slice the data for your bar chart and order it (you can just use reverse)
-  
+      let slicedData = result.slice(0, 10);
+      reversedData = slicedData.revers();
   
       // Build a Horizontal Bar Chart
-  
-       //});
-    ;
-  }
+      let trace1 = {
+        x: reversedData.map(object => object.otu_ids)
+       ,y: reversedData.map(object => object.sample_values)
+       ,text: reversedData.map(object => object.otu_labels)
+       ,type: "bar"
+       ,orientation: "h"
+      };
+
+      let traceData = [trace1];
+      Plotly.newPlot("plot", traceData);
+    });
+    
+  };
   
   function init() {
     // Get the reference to the dropdown menu
