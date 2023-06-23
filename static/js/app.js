@@ -40,16 +40,17 @@ function buildMetadata(sample) {
       let samples = data.samples;
       let filteredSamplesArray = samples.filter(sampleObj => sampleObj.id == sample);
       let result = filteredSamplesArray[0]
+      console.log(`result: ${filteredSamplesArray}`)
       // Pull the desired information (ids, labels, values) from your filtered data
       let id = result.id;
-      let labels = result.map(object => object.otu_ids);
-      let values = result.map(object => object.sample_values);
+      let labels = result.otu_ids;
+      let values = result.sample_values;
       // Build a Bubble Chart
       
   
       // Slice the data for your bar chart and order it (you can just use reverse)
-      let slicedData = result.slice(0, 10);
-      reversedData = slicedData.revers();
+      let slicedData = filteredSamplesArray.slice(0, 10);
+      reversedData = slicedData.reverse();
   
       // Build a Horizontal Bar Chart
       let trace1 = {
@@ -85,7 +86,7 @@ function buildMetadata(sample) {
   
       // Use the first sample from the list to build the initial plots
       let firstSample = idNames[0]
-      //buildCharts(firstSample)
+      buildCharts(firstSample)
       buildMetadata(firstSample)
     })
     ;
@@ -93,7 +94,7 @@ function buildMetadata(sample) {
   
   function optionChanged(newSample) {
     // Change your data and update your plots/metadata when newSample is selected from the dropdown
-    //buildCharts(newSample);
+    buildCharts(newSample);
     buildMetadata(newSample);
   
   };
