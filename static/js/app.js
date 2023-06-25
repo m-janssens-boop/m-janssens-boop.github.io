@@ -24,8 +24,6 @@ function buildMetadata(sample) {
     for (key in result){
       panel.append("h6").text(`${key.toUpperCase()}: ${result[key]}`)
     };
-  
-    // If you want to do the bonus, you can make the gauge chart here
     });
 };
   function buildCharts(sample) {
@@ -35,34 +33,50 @@ function buildMetadata(sample) {
 
     //fetch the JSON data and console log it
     d3.json(url).then((data) => {
-    console.log(data);
       // Filter the data for the object with the desired sample number (the id)
       let samples = data.samples;
       let filteredSamplesArray = samples.filter(sampleObj => sampleObj.id == sample);
       let result = filteredSamplesArray[0]
-      console.log(`result: ${filteredSamplesArray}`)
       // Pull the desired information (ids, labels, values) from your filtered data
       let id = result.id;
       let labels = result.otu_ids;
       let values = result.sample_values;
       // Build a Bubble Chart
-      
+      let bubbleTrace = {
+       x: labels,
+       y: values,
+       mode: 'markers',
+       marker: {
+       color: labels,
+       size: values
+        }
+      };
+      let bubbleLayout = {
+      title: "Prevalence of OTUs",
+      xaxis: {
+        title: {
+          text: "OTU ID"
+        }
+      }
+      };
+      let bubbleData = [bubbleTrace]
+      Plotly.newPlot('bubble', bubbleData, bubbleLayout);
   
       // Slice the data for your bar chart and order it (you can just use reverse)
       let slicedData = filteredSamplesArray.slice(0, 10);
-      reversedData = slicedData.reverse();
+      let reversedData = slicedData.reverse();
   
       // Build a Horizontal Bar Chart
-      let trace1 = {
-        x: reversedData.map(object => object.otu_ids)
-       ,y: reversedData.map(object => object.sample_values)
-       ,text: reversedData.map(object => object.otu_labels)
+      let barTrace = {
+        x: reversedData.otu_ids
+       ,y: reversedData.sample_values
+       ,text: reversedData.otu_labels
        ,type: "bar"
        ,orientation: "h"
       };
 
-      let traceData = [trace1];
-      Plotly.newPlot("plot", traceData);
+      let traceData = [barTrace];
+      Plotly.newPlot("bar", traceData);
     });
     
   };
