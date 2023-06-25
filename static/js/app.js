@@ -41,6 +41,7 @@ function buildMetadata(sample) {
       let id = result.id;
       let labels = result.otu_ids;
       let values = result.sample_values;
+      let otuLabels = result.otu_labels;
       // Build a Bubble Chart
       let bubbleTrace = {
        x: labels,
@@ -63,14 +64,23 @@ function buildMetadata(sample) {
       Plotly.newPlot('bubble', bubbleData, bubbleLayout);
   
       // Slice the data for your bar chart and order it (you can just use reverse)
-      let slicedData = filteredSamplesArray.slice(0, 10);
-      let reversedData = slicedData.reverse();
-  
+      let slicedOTUIDs = labels.slice(0, 10);
+      let slicedValues = values.slice(0, 10);
+      let slicedOTULabels = otuLabels.slice(0, 10);
+      let reversedOTUIDs = slicedOTUIDs.reverse();
+      let reversedValues = slicedValues.reverse();
+      let reversedOTULabels = slicedOTULabels.reverse()
+
+      // create string values for the otu labels array
+      let stringArray = reversedOTUIDs.map(String)
+      let stringOTUIDs = stringArray.map(i => 'OTU ' +i)
+    
+      console.log("OTU IDs: ", stringOTUIDs)
       // Build a Horizontal Bar Chart
       let barTrace = {
-        x: reversedData.otu_ids
-       ,y: reversedData.sample_values
-       ,text: reversedData.otu_labels
+        x: reversedValues
+       ,y: stringOTUIDs 
+       ,text: reversedOTULabels
        ,type: "bar"
        ,orientation: "h"
       };
